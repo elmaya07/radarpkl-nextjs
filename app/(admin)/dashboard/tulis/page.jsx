@@ -3,6 +3,7 @@
 import { useState } from "react";
 import SidebarDashboard from "../components/SidebarDashboard";
 import supabase from "@/app/config/supabaseConfig";
+import QuilEditor from "../components/QuilEditor";
 
 export default function TulisPage() {
   const [Judul, setJudul] = useState("");
@@ -11,10 +12,14 @@ export default function TulisPage() {
   const [ImageURL, setImageUrl] = useState("");
   const [ImageURL_2, setImageURL_2] = useState("");
   const [formError, setFormError] = useState(null);
+  const [tags, setTags] = useState("");
+  const [deskripsi, setDeskripsi] = useState("");
+  const [author, setAuthor] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+console.log([Judul,Isi_Berita,ImageURL,Kategori,ImageURL_2])
     if (!Judul || !Isi_Berita || !ImageURL || !Kategori || !ImageURL_2) {
       setFormError("Please fill in all the fields correctly.");
       return;
@@ -22,7 +27,7 @@ export default function TulisPage() {
 
     const { data, error } = await supabase
       .from("data-berita")
-      .insert([{ Isi_Berita, Judul, ImageURL, Kategori, ImageURL_2 }])
+      .insert([{ Isi_Berita, Judul, ImageURL, Kategori, ImageURL_2,tags,deskripsi,author }])
       .select();
 
     if (error) {
@@ -96,7 +101,7 @@ export default function TulisPage() {
 
   return (
     <>
-      <div className="h-screen w-full bg-slate-100 flex">
+      <div className="h-screen w-full   flex" style={{overflow: 'auto'}}>
         <SidebarDashboard />
         <div className="w-5/6 h-screen p-10">
           <form onSubmit={handleSubmit} className="h-full">
@@ -142,14 +147,15 @@ export default function TulisPage() {
               >
                 Isi Berita
               </label>
-              <textarea
+             <QuilEditor  value={Isi_Berita} setChangeText={e=>setIsiBerita(e)}/>
+             {/* <textarea
                 id="isi_berita"
                 rows="4"
                 className="block p-2.5 w-full h-96 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Tulis berita disini..."
                 value={Isi_Berita}
                 onChange={(e) => setIsiBerita(e.target.value)}
-              />
+              /> */}
             </div>
             <div className="my-4">
               <label
@@ -181,7 +187,58 @@ export default function TulisPage() {
                 onChange={(e) => handleFilesUploadKedua(e)}
               />
             </div>
-            <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+
+            <div className="my-4">
+              <label
+                htmlFor="tags"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Tags
+              </label>
+              <input
+                type="text"
+                id="tags"
+                placeholder="Pisahkan dengan koma Ex: Hiburan, Olahraga"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+              />
+            </div>
+
+            <div className="my-4">
+              <label
+                htmlFor="deskripsi"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Deskripsi
+              </label>
+              <textarea
+                type="text"
+                id="deskripsi"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value={deskripsi}
+                onChange={(e) => setDeskripsi(e.target.value)}
+              ></textarea>
+            </div>
+
+            <div className="my-4">
+              <label
+                htmlFor="author"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Author
+              </label>
+              <input
+                type="text"
+                id="author"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+              />
+            </div>
+
+
+            <button type="" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
               Upload Berita
             </button>
 
