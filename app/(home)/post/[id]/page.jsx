@@ -4,6 +4,8 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ContentLoader from "../../components/ContentLoader";
 import Image from "next/image";
+import CatatanDisway from "../../components/CatatanDisway";
+import Terpopuler from "../../components/Terpopuler";
 
 export default function PagePost() {
   const [dataBerita, setDataBerita] = useState(null);
